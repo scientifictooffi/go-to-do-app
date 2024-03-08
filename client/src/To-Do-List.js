@@ -26,7 +26,6 @@ class ToDoList extends Component {
 
   onSubmit = () => {
     let { task } = this.state;
-    // console.log("pRINTING task", this.state.task);
     if (task) {
       axios
         .post(

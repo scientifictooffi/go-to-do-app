@@ -8,10 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,19 +35,14 @@ func loadTheEnv() {
 }
 
 func createDBInstance() {
-	// DB connection string
 	connectionString := os.Getenv("DB_URI")
 	
-	// Database Name
 	dbName := os.Getenv("DB_NAME")
 
-	// Collection name
 	collName := os.Getenv("DB_COLLECTION_NAME")
 	
-	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
 
-	// connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
@@ -154,7 +147,6 @@ func getAllTask() []primitive.M {
 		if e != nil {
 			log.Fatal(e)
 		}
-		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
 		results = append(results, result)
 
 	}
@@ -178,7 +170,6 @@ func insertOneTask(task models.ToDoList) {
 	fmt.Println("Inserted a Single Record ", insertResult.InsertedID)
 }
 
-// task complete method, update task's status to true
 func taskComplete(task string) {
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
@@ -192,7 +183,6 @@ func taskComplete(task string) {
 	fmt.Println("modified count: ", result.ModifiedCount)
 }
 
-// task undo method, update task's status to false
 func undoTask(task string) {
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
@@ -219,7 +209,6 @@ func deleteOneTask(task string) {
 	fmt.Println("Deleted Document", d.DeletedCount)
 }
 
-// delete all the tasks from the DB
 func deleteAllTask() int64 {
 	d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)
 	if err != nil {
